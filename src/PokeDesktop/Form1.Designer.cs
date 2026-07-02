@@ -55,6 +55,7 @@
             txtSearch.Name = "txtSearch";
             txtSearch.Size = new Size(150, 31);
             txtSearch.TabIndex = 1;
+            txtSearch.TextChanged += TxtSearch_TextChanged;
             // 
             // btnLoadAll
             // 
@@ -64,6 +65,7 @@
             btnLoadAll.TabIndex = 2;
             btnLoadAll.Text = "Загрузить всех покемонов";
             btnLoadAll.UseVisualStyleBackColor = true;
+            btnLoadAll.Click += btnLoadAll_Click;
             // 
             // lbPokemon
             // 
@@ -72,6 +74,7 @@
             lbPokemon.Name = "lbPokemon";
             lbPokemon.Size = new Size(300, 529);
             lbPokemon.TabIndex = 3;
+            lbPokemon.SelectedIndexChanged += lbPokemon_SelectedIndexChanged;
             // 
             // pbPokemon
             // 
