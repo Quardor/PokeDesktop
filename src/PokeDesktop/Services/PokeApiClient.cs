@@ -3,35 +3,34 @@ using Newtonsoft.Json;
 
 namespace PokeDesktop.Services
 {
-    internal class PokeApiClient
+    public class PokeApiClient
     {
-        private readonly HttpClient _httpClient;
-        private const string BaseUrl = "https://pokeapi.co/api/v2/";
+        private readonly HttpClient _httpClient = new HttpClient 
+        { 
+            BaseAddress = new Uri("https://pokemon-go-api.github.io/pokemon-go-api/api/") 
+        };
 
-        public PokeApiClient()
+        private static readonly JsonSerializerSettings Settings = new JsonSerializerSettings
         {
-            _httpClient = new HttpClient();
-            _httpClient.DefaultRequestHeaders.UserAgent.ParseAdd("PokeDesktop/1.0");
+            NullValueHandling = NullValueHandling.Ignore,
+            MissingMemberHandling = MissingMemberHandling.Ignore,
+            ObjectCreationHandling = ObjectCreationHandling.Replace
+        };
+
+        public async Task<List<Pokemon>> GetAllPokemonAsync()
+        {
+            var response = await _httpClient.GetAsync("pokedex.json");
+            response.EnsureSuccessStatusCode();
+            var json = await response.Content.ReadAsStringAsync();
+            return JsonConvert.DeserializeObject<List<Pokemon>>(json, Settings);
         }
 
-        public async Task<Pokemon?> GetPokemonAsync(string name)
+        public async Task<Pokemon> GetPokemonByIdAsync(int dexNr)
         {
-            try
-            {
-                string url = $"{BaseUrl}pokemon/{name.ToLower().Trim()}";
-                var response = await _httpClient.GetAsync(url);
-
-                if (response.IsSuccessStatusCode)
-                {
-                    string json = await response.Content.ReadAsStringAsync();
-                    return JsonConvert.DeserializeObject<Pokemon>(json);
-                }
-            }
-            catch (Exception ex)
-            {
-                Console.WriteLine($"API Error: {ex.Message}");
-            }
-            return null;
+            var response = await _httpClient.GetAsync($"pokedex/id/{dexNr}.json");
+            response.EnsureSuccessStatusCode();
+            var json = await response.Content.ReadAsStringAsync();
+            return JsonConvert.DeserializeObject<Pokemon>(json, Settings);
         }
     }
 }
