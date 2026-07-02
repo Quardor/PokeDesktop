@@ -4,7 +4,7 @@ using System.Text;
 
 namespace PokeDesktop.Models
 {
-    public class Pokemon
+    internal class Pokemon
     {
         public int Id { get; set; }
         public string Name { get; set; } = string.Empty;
@@ -14,17 +14,17 @@ namespace PokeDesktop.Models
         public Sprites Sprites { get; set; } = new();
     }
 
-    public class PokemonType
+    internal class PokemonType
     {
         public TypeInfo Type { get; set; } = new();
     }
 
-    public class TypeInfo
+    internal class TypeInfo
     {
         public string Name { get; set; } = string.Empty;
     }
 
-    public class Sprites
+    internal class Sprites
     {
         public string FrontDefault { get; set; } = string.Empty;
     }
